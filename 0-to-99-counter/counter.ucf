@@ -1,0 +1,19 @@
+
+
+NET "clk" LOC = P56;
+NET "seg0[0]" LOC = P134;
+NET "seg0[1]" LOC = P133;
+NET "seg0[2]" LOC = P132;
+NET "seg0[3]" LOC = P131;
+NET "seg0[4]" LOC = P127;
+NET "seg0[5]" LOC = P126;
+NET "seg0[6]" LOC = P124;
+
+# PlanAhead Generated physical constraints 
+
+NET "seg1[0]" LOC = P144;
+NET "seg1[1]" LOC = P143;
+NET "seg1[2]" LOC = P142;
+NET "seg1[3]" LOC = P141;
+NET "seg1[4]" LOC = P140;
+NET "seg1[5]" LOC = P139;

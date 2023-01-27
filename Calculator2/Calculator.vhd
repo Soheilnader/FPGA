@@ -7,7 +7,8 @@ use ieee.std_logic_signed.all;
 entity ttt is
 PORT(k:in std_logic_vector(3 downto 0);
 		clk, reset: in std_logic;
-		ans: out integer range -99999 to 99999);
+		seg4, seg3, seg2, seg1, seg0: out std_logic_vector(6 downto 0);
+		minus: out std_logic);
 end ttt;
 
 architecture Behavioral of ttt is
@@ -19,9 +20,9 @@ signal nx_state: state;
 signal num_s: integer range 0 to 99999 := 0;
 signal num1_s: integer range -99999 to 99999 := 0;
 signal num2_s: integer range -99999 to 99999 := 0;
-signal a_s: integer range -99999 to 99999 := 0;
-
+signal a_s: integer range -99999 to 99999 := 0; 
 signal flag_s: integer range 0 to 5 := 0;
+signal seg4_s, seg3_s, seg2_s, seg1_s, seg0_s: integer range 0 to 9;
 
 -----------------------------------------------
 begin
@@ -58,6 +59,11 @@ elsif(k="1110") then 	-- =
 nx_state <= result;
 else nx_state <= st0;
 end if;
+seg4_s <= (num / 10000) mod 10;
+seg3_s <= (num / 1000) mod 10;
+seg2_s <= (num / 100) mod 10;
+seg1_s <= (num / 10) mod 10;
+seg0_s <= (num / 1) mod 10;
 ----------------------------------------------------------------------------------
 when st1 => 
 num := num * 10;
@@ -160,7 +166,6 @@ end if;
 when result =>
 num2 := num1;
 num1 := num;
-
 if(flag=1) then 
 num2:= num1 + num2;
 elsif(flag=2) then 
@@ -169,6 +174,14 @@ elsif(flag=3) then
 num2:= num1 * num2;
 elsif(flag=4) then 
 num2:= num2 / num1;
+end if;
+seg4_s <= (abs(num2) / 10000) mod 10;
+seg3_s <= (abs(num2) / 1000) mod 10;
+seg2_s <= (abs(num2) / 100) mod 10;
+seg1_s <= (abs(num2) / 10) mod 10;
+seg0_s <= (abs(num2) / 1) mod 10;
+if(num2 < 0) then minus <= '1';
+else minus <= '0';
 end if;
 nx_state <= wr1;
 ----------------------------------------------------------------------------------
@@ -199,4 +212,63 @@ num_s <= num;
 
 
 end process;
+seg4 <= "1111110" when seg4_s=0 else
+        "0110000" when seg4_s=1 else
+        "1101101" when seg4_s=2 else
+        "1111001" when seg4_s=3 else
+        "0110011" when seg4_s=4 else
+        "1011011" when seg4_s=5 else
+        "1011111" when seg4_s=6 else
+        "1110000" when seg4_s=7 else
+        "1111111" when seg4_s=8 else
+        "1111011" when seg4_s=9 else
+        "ZZZZZZZ";
+
+seg3 <= "1111110" when seg3_s=0 else
+        "0110000" when seg3_s=1 else
+        "1101101" when seg3_s=2 else
+        "1111001" when seg3_s=3 else
+        "0110011" when seg3_s=4 else
+        "1011011" when seg3_s=5 else
+        "1011111" when seg3_s=6 else
+        "1110000" when seg3_s=7 else
+        "1111111" when seg3_s=8 else
+        "1111011" when seg3_s=9 else
+        "ZZZZZZZ";
+		  		  
+seg2 <= "1111110" when seg2_s=0 else
+        "0110000" when seg2_s=1 else
+        "1101101" when seg2_s=2 else
+        "1111001" when seg2_s=3 else
+        "0110011" when seg2_s=4 else
+        "1011011" when seg2_s=5 else
+        "1011111" when seg2_s=6 else
+        "1110000" when seg2_s=7 else
+        "1111111" when seg2_s=8 else
+        "1111011" when seg2_s=9 else
+        "ZZZZZZZ";
+
+seg1 <= "1111110" when seg1_s=0 else
+        "0110000" when seg1_s=1 else
+        "1101101" when seg1_s=2 else
+        "1111001" when seg1_s=3 else
+        "0110011" when seg1_s=4 else
+        "1011011" when seg1_s=5 else
+        "1011111" when seg1_s=6 else
+        "1110000" when seg1_s=7 else
+        "1111111" when seg1_s=8 else
+        "1111011" when seg1_s=9 else
+        "ZZZZZZZ";	
+
+seg0 <= "1111110" when seg0_s=0 else
+        "0110000" when seg0_s=1 else
+        "1101101" when seg0_s=2 else
+        "1111001" when seg0_s=3 else
+        "0110011" when seg0_s=4 else
+        "1011011" when seg0_s=5 else
+        "1011111" when seg0_s=6 else
+        "1110000" when seg0_s=7 else
+        "1111111" when seg0_s=8 else
+        "1111011" when seg0_s=9 else
+        "ZZZZZZZ";		  
 end Behavioral;

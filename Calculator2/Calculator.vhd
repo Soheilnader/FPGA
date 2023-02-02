@@ -1,3 +1,4 @@
+--By:Soheil Nadernezhad
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -13,6 +14,9 @@ end calculator;
 
 architecture Behavioral of calculator is
 type state is(rst,st0, st1, w1, st2, w2, st3, w3, st4, w4, st5, w5, result, wr1, wr2);
+type segments is array (0 to 9) of std_logic_vector(6 downto 0);
+constant seven_seg: segments :=("1111110", "0110000","1101101","1111001","0110011",
+										 "1011011","1011111","1110000","1111111", "1111011");
 signal pr_state: state := rst;
 signal nx_state: state;
 signal seg4_s, seg3_s, seg2_s, seg1_s, seg0_s: integer range 0 to 9;
@@ -121,8 +125,10 @@ elsif(flag=2) then
 answer:= num2 - num1;
 elsif(flag=3) then 
 answer:= num1 * num2;
-elsif(flag=4) then 
+elsif(flag=4 and num1/=0) then 
 answer:= num2 / num1;
+elsif(flag=4 and num1=0) then 
+answer:= 99999;
 end if;
 seg4_s <= (abs(answer) / 10000) mod 10;
 seg3_s <= (abs(answer) / 1000) mod 10;
@@ -155,63 +161,10 @@ end case;
 
 
 end process;
-seg4 <= "1111110" when seg4_s=0 else
-        "0110000" when seg4_s=1 else
-        "1101101" when seg4_s=2 else
-        "1111001" when seg4_s=3 else
-        "0110011" when seg4_s=4 else
-        "1011011" when seg4_s=5 else
-        "1011111" when seg4_s=6 else
-        "1110000" when seg4_s=7 else
-        "1111111" when seg4_s=8 else
-        "1111011" when seg4_s=9 else
-        "ZZZZZZZ";
+seg4 <= seven_seg(seg4_s);
+seg3 <= seven_seg(seg3_s);
+seg2 <= seven_seg(seg2_s);
+seg1 <= seven_seg(seg1_s);
+seg0 <= seven_seg(seg0_s);
 
-seg3 <= "1111110" when seg3_s=0 else
-        "0110000" when seg3_s=1 else
-        "1101101" when seg3_s=2 else
-        "1111001" when seg3_s=3 else
-        "0110011" when seg3_s=4 else
-        "1011011" when seg3_s=5 else
-        "1011111" when seg3_s=6 else
-        "1110000" when seg3_s=7 else
-        "1111111" when seg3_s=8 else
-        "1111011" when seg3_s=9 else
-        "ZZZZZZZ";
-		  		  
-seg2 <= "1111110" when seg2_s=0 else
-        "0110000" when seg2_s=1 else
-        "1101101" when seg2_s=2 else
-        "1111001" when seg2_s=3 else
-        "0110011" when seg2_s=4 else
-        "1011011" when seg2_s=5 else
-        "1011111" when seg2_s=6 else
-        "1110000" when seg2_s=7 else
-        "1111111" when seg2_s=8 else
-        "1111011" when seg2_s=9 else
-        "ZZZZZZZ";
-
-seg1 <= "1111110" when seg1_s=0 else
-        "0110000" when seg1_s=1 else
-        "1101101" when seg1_s=2 else
-        "1111001" when seg1_s=3 else
-        "0110011" when seg1_s=4 else
-        "1011011" when seg1_s=5 else
-        "1011111" when seg1_s=6 else
-        "1110000" when seg1_s=7 else
-        "1111111" when seg1_s=8 else
-        "1111011" when seg1_s=9 else
-        "ZZZZZZZ";	
-
-seg0 <= "1111110" when seg0_s=0 else
-        "0110000" when seg0_s=1 else
-        "1101101" when seg0_s=2 else
-        "1111001" when seg0_s=3 else
-        "0110011" when seg0_s=4 else
-        "1011011" when seg0_s=5 else
-        "1011111" when seg0_s=6 else
-        "1110000" when seg0_s=7 else
-        "1111111" when seg0_s=8 else
-        "1111011" when seg0_s=9 else
-        "ZZZZZZZ";		  
 end Behavioral;

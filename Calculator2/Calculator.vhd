@@ -38,7 +38,7 @@ case pr_state is
 ----------------------------------------------------------------------------------
 when st0 => 
 minus <= '0';
-if(conv_integer(k) >=0 and conv_integer(k)<10) then 
+if(conv_integer('0' & k) >=0 and conv_integer('0' & k)<10) then 
 nx_state <= st1;			
 elsif(k="1010") then 	-- +
 nx_state <= st2;			 
@@ -60,7 +60,7 @@ seg0_s <= (num / 1) mod 10;
 ----------------------------------------------------------------------------------
 when st1 => 
 num := num * 10;
-num := num + conv_integer(k);
+num := num + conv_integer('0' & k);
 nx_state <= w1;
 ----------------------------------------------------------------------------------
 when w1 => 
